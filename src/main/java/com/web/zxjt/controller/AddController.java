@@ -3,6 +3,7 @@ package com.web.zxjt.controller;
 import com.web.zxjt.dto.userDto;
 import com.web.zxjt.mapper.StudentMapper;
 import com.web.zxjt.model.Student;
+import com.web.zxjt.service.StuService;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,7 @@ import java.util.List;
 @Controller
 public class AddController {
     @Autowired
-    private StudentMapper studentMapper;
+    private StuService stuService;
     private Integer originalId=null;
     @GetMapping("/add")
     public String add(Student student){
@@ -51,7 +52,7 @@ public class AddController {
     //前端只能传封装，传具体成员数据时以上两种方式都接收不到
     public List<Student> search(@RequestParam("name") String name){//@RequestParam("name") String name
         //System.out.println(name);
-        List<Student> students=studentMapper.findByName(name);;
+        List<Student> students=stuService.findByName(name);;
         //odel.addAttribute("students",students);
        // System.out.println(students);
         return students;
@@ -62,7 +63,7 @@ public class AddController {
     public Student updateStu(@PathVariable("id") Integer id){
         //System.out.println(id);
         originalId=id;
-        Student stu_id = studentMapper.findById(id);
+        Student stu_id = stuService.findById(id);
         //model.addAttribute("stu_id",stu_id);
         return stu_id;
     }
@@ -71,7 +72,7 @@ public class AddController {
     @ResponseBody
     public Student testStu(@PathVariable("id") Integer id){
         System.out.println(id);
-        Student stu_id = studentMapper.findById(id);
+        Student stu_id = stuService.findById(id);
         //model.addAttribute("stu_id",stu_id);
         return stu_id;
     }
@@ -94,7 +95,7 @@ public class AddController {
         System.out.println("ss"+originalId);
         //studentMapper.delete(originalId);
         //studentMapper.insert(student);
-        studentMapper.update(student,originalId);
+        stuService.update(student,originalId);
     }
 
     @PostMapping("/add")
@@ -103,13 +104,13 @@ public class AddController {
         if(result.hasErrors()){
             return ;
         }
-        studentMapper.insert(student);
+        stuService.insert(student);
     }
 
     @GetMapping("/{id}")
     @ResponseBody
     public void delete(@PathVariable("id") Integer id){
-        studentMapper.delete(id);
+        stuService.delete(id);
         System.out.println(id);
     }
 
